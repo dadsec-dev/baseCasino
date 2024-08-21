@@ -65,24 +65,25 @@ contract baseCasino {
     }
 
 
-// implement ticket purchase mechanism
-    // function buyTicket(uint256 number) external payable {
-    //     require(msg.value == ticketPrice, "Incorrect ticket price");
-    //     require(!_numberAlreadyTaken(currentWeek, number), "Number already taken");
+    function buyTicket(uint256 number) external payable {
+        require(msg.value == ticketPrice, "Incorrect ticket price");
+        // require(!_numberAlreadyTaken(currentWeek, number), "Number already taken");
+        require(takenNumbers[number] == false, "Number already taken");
 
-    //     DrawInfo storage draw = weeklyDraws[currentWeek];
+        DrawInfo storage draw = weeklyDraws[currentWeek];
         
-    //     draw.tickets.push(Ticket({
-    //         owner: msg.sender,
-    //         number: number
-    //     }));
-    //     draw.takenNumbers[number] = true;
-    //     draw.totalContribution += msg.value;
+        draw.tickets.push(Ticket({
+            owner: msg.sender,
+            number: number
+        }));
+        draw.takenNumbers[number] = true;
+        draw.totalContribution += msg.value;
+        draw.totalPlayers += 1;
 
-    //     xpPoints[msg.sender] += 10; // Award 10 XP points
+        xpPoints[msg.sender] += 10; // Award 10 XP points
 
-    //     emit TicketPurchased(msg.sender, currentWeek, number);
-    // }
+        emit TicketPurchased(msg.sender, currentWeek, number);
+    }
 
 
 
